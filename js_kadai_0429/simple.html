@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>Firebase:v9:Chatアプリ</title>
+  </head>
+  <body>
+    <!-- コンテンツ表示画面 -->
+
+    <p>OBJECT/KEYRESULTS 2022 1Q</p>
+    <div>
+      <div>
+        <select name="" id="uname">
+          <option value="00">評価者選択</option>
+          <option value="1">ボス</option>
+          <option value="2">部下</option>
+        </select>
+      </div>
+
+      <!-- <div>名前：<input type="text" id="uname" /></div> -->
+
+      <!-- <button id="send">送信</button> -->
+
+      <select name="" id="self_1">
+        <option value="00">評語、選択してください</option>
+        <option value="4">S</option>
+        <option value="3">A</option>
+        <option value="2">B</option>
+        <option value="1">C</option>
+      </select>
+
+      <!-- <select name="" id="boss_1">
+        <option value="00">自己評語、選択してください</option>
+        <option value="4">S</option>
+        <option value="3">A</option>
+        <option value="2">B</option>
+        <option value="1">C</option>
+      </select> -->
+
+      <div>
+        <textarea id="text" cols="15" rows="10"></textarea>
+        <button id="send">送信</button>
+      </div>
+
+      <!-- <div>
+        <textarea id="text1-2" cols="15" rows="10"></textarea>
+        <button id="send1-2">送信</button>
+      </div> -->
+      <!-- <div id="btn">btn</div> -->
+      <div id="output"></div>
+      <div id="result">決定評語</div>
+      <!--/ コンテンツ表示画面 -->
+
+      <!-- 登録されたデータをjsで表示するエリア -->
+    </div>
+
+    <!-- ＋＋＋目標２つ目＋＋＋ -->
+
+    <div>
+      <div>
+        <select name="" id="uname2">
+          <option value="00">評価者選択</option>
+          <option value="1">ボス</option>
+          <option value="2">部下</option>
+        </select>
+      </div>
+
+      <!-- <div>名前：<input type="text" id="uname" /></div> -->
+
+      <!-- <button id="send">送信</button> -->
+
+      <select name="" id="self_2">
+        <option value="00">評語、選択してください</option>
+        <option value="4">S</option>
+        <option value="3">A</option>
+        <option value="2">B</option>
+        <option value="1">C</option>
+      </select>
+
+      <!-- <select name="" id="boss_1">
+        <option value="00">自己評語、選択してください</option>
+        <option value="4">S</option>
+        <option value="3">A</option>
+        <option value="2">B</option>
+        <option value="1">C</option>
+      </select> -->
+
+      <div>
+        <textarea id="text2" cols="15" rows="10"></textarea>
+        <button id="send2">送信</button>
+      </div>
+
+      <!-- <div>
+        <textarea id="text1-2" cols="15" rows="10"></textarea>
+        <button id="send1-2">送信</button>
+      </div> -->
+      <!-- <div id="btn">btn</div> -->
+      <div id="output2"></div>
+      <div id="result2">決定評語</div>
+      <!--/ コンテンツ表示画面 -->
+
+      <!-- 登録されたデータをjsで表示するエリア -->
+    </div>
+
+    <!-- ＋＋＋目標3つ目＋＋＋ -->
+
+    <div>
+      <div>
+        <select name="" id="uname3">
+          <option value="00">評価者選択</option>
+          <option value="1">ボス</option>
+          <option value="2">部下</option>
+        </select>
+      </div>
+
+      <!-- <div>名前：<input type="text" id="uname" /></div> -->
+
+      <!-- <button id="send">送信</button> -->
+
+      <select name="" id="self_3">
+        <option value="00">評語、選択してください</option>
+        <option value="4">S</option>
+        <option value="3">A</option>
+        <option value="2">B</option>
+        <option value="1">C</option>
+      </select>
+
+      <!-- <select name="" id="boss_1">
+        <option value="00">自己評語、選択してください</option>
+        <option value="4">S</option>
+        <option value="3">A</option>
+        <option value="2">B</option>
+        <option value="1">C</option>
+      </select> -->
+
+      <div>
+        <textarea id="text3" cols="15" rows="10"></textarea>
+        <button id="send3">送信</button>
+      </div>
+
+      <!-- <div>
+        <textarea id="text1-2" cols="15" rows="10"></textarea>
+        <button id="send1-2">送信</button>
+      </div> -->
+      <!-- <div id="btn">btn</div> -->
+      <div id="output3"></div>
+      <div id="result3">決定評語</div>
+      <!--/ コンテンツ表示画面 -->
+
+      <!-- 登録されたデータをjsで表示するエリア -->
+    </div>
+
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- JQuery -->
+
+    <!--** 以下Firebase **-->
+
+    <!--** 以下Firebase **-->
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        push,
+        set,
+        onChildAdded,
+        remove,
+        onChildRemoved,
+      } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
+      // Your web app's Firebase configuration
+
+      const firebaseConfig = {
+  
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app); //RealtimeDBに接続
+
+      const dbRef = ref(db, "chat"); //RealtimeDB内の"chat"を使う
+      const dbRef2 = ref(db, "chat2"); //RealtimeDB内の"chat"を使う
+      const dbRef3 = ref(db, "chat3"); //RealtimeDB内の"chat"を使う
+      //   console.log(dbRef )
+
+      //   const evaluation= $("#self_1").val()
+      //   const db_number = ref(db, `"chat"/${evaluation}`); //RealtimeDB内の"chat"の下の階層を使う
+
+      //送信ボタンが押されたら処理される（登録が）
+
+      //   ++++1回目の目標のfirebase処理+++
+      $("#send").on("click", function () {
+        alert(1);
+
+        const uname = $("#uname").val();
+        const text = $("#text").val();
+        const j_hyouka1 = $("#self_1").val();
+
+        console.log(uname, "名前");
+        console.log(text, "テキスト");
+        console.log(j_hyouka1, "自己評価１");
+
+        const msg = {
+          uname: uname,
+          text: text,
+          j_hyouka1: j_hyouka1,
+        };
+
+        const newPostRef = push(dbRef);
+        set(newPostRef, msg);
+
+        //ブランクを入力させる（文字消す）
+        // $("#uname").val("");
+        $("#text").val("");
+
+        //この下は消さない
+      });
+
+      var sum_number = 0;
+      var count_number = 0;
+
+      // 受信処理を記述します🤗
+      onChildAdded(dbRef, function (data) {
+        const msg = data.val();
+        // console.log(msg, "dataを受信");
+        const kagi = data.key;
+        // console.log(kagi, "鍵");
+
+        const hyouka = msg.j_hyouka1;
+        // console.log(hyouka, "評価点");
+
+        var hyouka_num = parseInt(hyouka);
+        // console.log(typeof hyouka_num);
+
+        const name = msg.uname;
+
+        if (msg.uname == "1") {
+          console.log(msg.j_hyouka1);
+          var name_value = "ボス";
+          sum_number += parseInt(msg.j_hyouka1);
+          console.log(sum_number);
+
+          count_number += 1;
+          console.log(count_number);
+        }
+
+        if (msg.uname == "2") {
+          console.log(msg.j_hyouka1);
+          var name_value = "部下";
+          sum_number += parseInt(msg.j_hyouka1);
+          console.log(sum_number);
+
+          count_number += 1;
+          console.log(count_number);
+        }
+        // console.log(sum_number)
+        // console.log(count_number)
+
+        // console.log(ave_number)
+
+        let html = `
+        <div class="${kagi}">
+           <table border="1" width=300px>
+            <tr>
+            <td width=100px>${name_value}</td>
+            <td width=100px>${msg.text}</td>
+            <td width=100px>${hyouka_num}</td>
+            </tr>
+            </table>
+        </div>
+          `;
+
+        //   let html = `
+        //     <p>${msg.uname}</p>
+        //     <p>${msg.text}</p>
+        //     <p>${msg.j_hyouka1}</p>
+        //   `;
+        // console.log(html)
+
+        $("#output").append(html);
+
+        if (count_number >= 2) {
+          var ave_number = sum_number / count_number;
+          var result_number = ave_number;
+
+          console.log(count_number);
+          $("#result").append(result_number);
+          console.log(result_number);
+        }
+      });
+
+      //   ++++2回目の目標のfirebase処理+++
+      $("#send2").on("click", function () {
+        alert(2);
+
+        const uname2 = $("#uname2").val();
+        const text2 = $("#text2").val();
+        const j_hyouka2 = $("#self_2").val();
+
+        console.log(uname2, "名前");
+        console.log(text2, "テキスト");
+        console.log(j_hyouka2, "自己評価2");
+
+        const msg2 = {
+          uname2: uname2,
+          text2: text2,
+          j_hyouka2: j_hyouka2,
+        };
+
+        const newPostRef2 = push(dbRef2);
+        set(newPostRef2, msg2);
+
+        //ブランクを入力させる（文字消す）
+        $("#text2").val("");
+
+        //この下は消さない
+      });
+
+      var sum_number2 = 0;
+      var count_number2 = 0;
+
+      // 受信処理を記述します🤗
+      onChildAdded(dbRef2, function (data2) {
+        const msg2 = data2.val();
+        console.log(msg2, "dataを受信");
+        const kagi2 = data2.key;
+        console.log(kagi2, "鍵2");
+
+        const hyouka2 = msg2.j_hyouka2;
+        console.log(hyouka2, "評価点");
+
+        var hyouka_num2 = parseInt(hyouka2);
+        console.log(typeof hyouka_num2);
+
+        const name2 = msg2.uname2;
+
+        if (msg2.uname2 == "1") {
+          console.log(msg2.j_hyouka2);
+          var name_value2 = "ボス";
+          sum_number2 += parseInt(msg2.j_hyouka2);
+          console.log(sum_number2);
+
+          count_number2 += 1;
+          console.log(count_number2);
+        }
+
+        if (msg2.uname2 == "2") {
+          console.log(msg2.j_hyouka2);
+          var name_value2 = "部下";
+          sum_number2 += parseInt(msg2.j_hyouka2);
+          console.log(sum_number2);
+
+          count_number2 += 1;
+          console.log(count_number2);
+        }
+
+        let html2 = `
+           <table border="1" width=300px>
+            <tr>
+            <td width=100px>${name_value2}</td>
+            <td width=100px>${msg2.text2}</td>
+            <td width=100px>${hyouka_num2}</td>
+            </tr>
+            </table>
+          `;
+
+        $("#output2").append(html2);
+
+        if (count_number2 >= 2) {
+          var ave_number2 = sum_number2 / count_number2;
+          var result_number2 = ave_number2;
+
+          console.log(count_number2);
+          $("#result2").append(result_number2);
+          console.log(result_number2);
+        }
+      });
+
+      // //   ++++3回目の目標のfirebase処理+++
+
+      $("#send3").on("click", function () {
+        alert(3);
+
+        const uname3 = $("#uname3").val();
+        const text3 = $("#text3").val();
+        const j_hyouka3 = $("#self_3").val();
+
+        console.log(uname3, "名前");
+        console.log(text3, "テキスト");
+        console.log(j_hyouka3, "自己評価3");
+
+        const msg3 = {
+          uname3: uname3,
+          text3: text3,
+          j_hyouka3: j_hyouka3,
+        };
+
+        const newPostRef3 = push(dbRef3);
+        set(newPostRef3, msg3);
+
+        //ブランクを入力させる（文字消す）
+        $("#text3").val("");
+
+        //この下は消さない
+      });
+
+      var sum_number3 = 0;
+      var count_number3 = 0;
+
+      // 受信処理を記述します🤗
+      onChildAdded(dbRef3, function (data3) {
+        const msg3 = data3.val();
+        console.log(msg3, "dataを受信");
+        const kagi3 = data3.key;
+        console.log(kagi3, "鍵3");
+
+        const hyouka3 = msg3.j_hyouka3;
+        console.log(hyouka3, "評価点");
+
+        var hyouka_num3 = parseInt(hyouka3);
+        console.log(typeof hyouka_num3);
+
+        const name3 = msg3.uname3;
+
+        if (msg3.uname3 == "1") {
+          console.log(msg3.j_hyouka3);
+          var name_value3 = "ボス";
+          sum_number3 += parseInt(msg3.j_hyouka3);
+          console.log(sum_number3);
+
+          count_number3 += 1;
+          console.log(count_number3);
+        }
+
+        if (msg3.uname3 == "2") {
+          console.log(msg3.j_hyouka3);
+          var name_value3 = "部下";
+          sum_number3 += parseInt(msg3.j_hyouka3);
+          console.log(sum_number3);
+
+          count_number3 += 1;
+          console.log(count_number3);
+        }
+
+        let html3 = `
+           <table border="1" width=300px>
+            <tr>
+            <td width=100px>${name_value3}</td>
+            <td width=100px>${msg3.text3}</td>
+            <td width=100px>${hyouka_num3}</td>
+            </tr>
+            </table>
+          `;
+
+        $("#output3").append(html3);
+
+        if (count_number3 >= 2) {
+          var ave_number3 = sum_number3 / count_number3;
+          var result_number3 = ave_number3;
+
+          console.log(count_number3);
+          $("#result3").append(result_number3);
+          console.log(result_number3);
+        }
+      });
+
+      // $("#send").on("click", function () {
+      //     alert(1);
+
+      //     const uname = $("#uname").val();
+      //     const text = $("#text").val();
+      //     const j_hyouka1 = $("#self_1").val();
+
+      //     console.log(uname,'名前')
+      //     console.log(text,'テキスト')
+      //     console.log(j_hyouka1,"自己評価１")
+
+      //     const msg = {
+      //       uname: uname,
+      //       text: text,
+      //       j_hyouka1: j_hyouka1,
+      //     };
+
+      //     const newPostRef = push(dbRef);
+      //     set(newPostRef, msg);
+
+      //     //ブランクを入力させる（文字消す）
+      //     $("#text").val("");
+
+      //     //この下は消さない
+      //   });
+
+      //   // 受信処理を記述します🤗
+      //   onChildAdded(dbRef, function (data) {
+      //     const msg = data.val();
+      //     console.log(msg, "dataを受信");
+
+      //     const hyouka = msg.j_hyouka1;
+      //     console.log(hyouka, "評価点");
+
+      //     var hyouka_num = parseInt(hyouka);
+      //     console.log(typeof hyouka_num);
+
+      //     const name = msg.uname
+
+      //     if(name=="1"){
+      //         var name_value= "ボス"
+      //         console.log(name_value)
+      //     }
+
+      //     if(name=="2"){
+      //         var name_value= "部下"
+      //         console.log(name_value)
+      //     }
+
+      //     let html = `
+      //        <table border="1" width=300px>
+      //         <tr>
+      //         <td width=100px>${name_value}</td>
+      //         <td width=100px>${msg.text}</td>
+      //         <td width=100px>${hyouka_num}</td>
+      //         </tr>
+      //         </table>
+      //       `;
+
+      //     $("#output3").append(html);
+      //   });
+    </script>
+  </body>
+</html>
